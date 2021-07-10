@@ -224,6 +224,7 @@
           </execution>
         </executions>
         <configuration>
+          <useNativeGit>true</useNativeGit>
           <verbose>true</verbose>
           <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
           <generateGitPropertiesFile>true</generateGitPropertiesFile>
@@ -300,7 +301,7 @@
     <pluginRepository>
       <id>spring-snapshots</id>
       <name>Spring Snapshots</name>
-      <url>https://repo.spring.io/snapshot</url>
+      <url>https://avinash.repo.com/artifactory/jha1986/</url>
       <snapshots>
         <enabled>true</enabled>
       </snapshots>
@@ -308,7 +309,7 @@
     <pluginRepository>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
+      <url>https://avinash.repo.com/artifactory/jha1986/</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
