@@ -32,8 +32,8 @@ node {
 //              rtDocker.push 'http://localhost:8082/docker-virtual/spring-petclinic-2.4.6', 'docker-virtual', buildInfo
 //      }
 
-     docker.withRegistry('http://localhost:8082/docker-virtual/spring-petclinic-2.4.6') {
-     docker.build('avinash04/my-docker:spring-petclinic-2.4.6').push('latest')
+     docker.withRegistry('http://localhost:8082/docker-virtual/spring-petclinic-2.4.6', 'docker-login') {
+     docker.build('spring-petclinic-2.4.6').push('latest')
      }
 
      stage ('Publish build info') {
