@@ -10,14 +10,14 @@ node {
 
         // Tool name from Jenkins configuration
         rtMaven.tool = 'maven 3.6.3'
-        rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: server
-        rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
+        //rtMaven.deployer releaseRepo: 'docker-virtual', snapshotRepo: 'libs-snapshot-local', server: server
+        //rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
         rtDocker = Artifactory.docker server: server, host: '192.168.0.13'
         buildInfo = Artifactory.newBuildInfo()
     }
 
     stage ('Exec Maven') {
-        rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+        rtMaven.run pom: 'pom.xml', goals: 'clean build', buildInfo: buildInfo
     }
 
     stage ('Add properties') {
