@@ -25,11 +25,11 @@ node {
      }
 
      stage ('Build docker image') {
-             docker.build('http://localhost:8082/docker-virtual/spring-petclinic:latest', '.')
+             docker.build('avinash04/avinash04/my-docker:spring-petclinic-2.4.6 .')
      }
 
      stage ('Push image to Artifactory') {
-             rtDocker.push 'http://localhost:8082/docker-virtual/spring-petclinic:latest', 'docker-virtual', buildInfo
+             rtDocker.push 'http://localhost:8082/docker-virtual/spring-petclinic-2.4.6', 'docker-virtual', buildInfo
      }
 
      stage ('Publish build info') {
