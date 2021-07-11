@@ -1,7 +1,7 @@
 node {
     def server = Artifactory.newServer url: 'http://localhost:8082/artifactory', username: 'admin', password: 'password'
     def rtMaven = Artifactory.newMavenBuild()
-    def rtDocker
+    def rtDocker = Artifactory.docker server: server
     def buildInfo
 
 
@@ -12,7 +12,6 @@ node {
         rtMaven.tool = 'maven 3.6.3'
         rtMaven.deployer releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
         rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
-        rtDocker = Artifactory.docker server: server
         buildInfo = Artifactory.newBuildInfo()
     }
 
