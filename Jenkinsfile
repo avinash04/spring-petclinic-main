@@ -1,15 +1,8 @@
 node {
-    def server = Artifactory.newServer url: 'http://localhost:8082/artifactory', username: 'admin', password: 'password'
+    def server = Artifactory.newServer url: 'http://192.168.0.13:8082/artifactory', username: 'admin', password: 'password'
     def rtMaven = Artifactory.newMavenBuild()
     def rtDocker = Artifactory.docker server: server
     def buildInfo
-
-    agent {
-            docker {
-                image '3.5-jdk-8-alpine'
-                args '-v /root/.m2:/root/.m2'
-            }
-    }
 
     stage ('Artifactory configuration') {
         // Obtain an Artifactory server instance, defined in Jenkins --> Manage Jenkins --> Configure System:
@@ -35,7 +28,7 @@ node {
      }
 
      stage ('Push image to Artifactory') {
-             rtDocker.push 'http://localhost:8082/docker-virtual/spring-petclinic-2.4.6', 'docker-virtual', buildInfo
+             rtDocker.push 'http://192.168.0.13:8082/docker-virtual/spring-petclinic-2.4.6', 'docker-virtual', buildInfo
      }
 
 //      docker.withRegistry('http://localhost:8082/docker-virtual/spring-petclinic-2.4.6', 'docker-login') {
