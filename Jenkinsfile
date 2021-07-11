@@ -34,7 +34,7 @@ node {
 
 //      docker.withRegistry('http://localhost:8082/docker-virtual/spring-petclinic-2.4.6', 'docker-login') {
 //      docker.build('spring-petclinic-2.4.6').push('latest')
-     }
+     //}
 
      stage ('Publish build info') {
              server.publishBuildInfo buildInfo
