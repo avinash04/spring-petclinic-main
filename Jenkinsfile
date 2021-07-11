@@ -25,7 +25,7 @@ node {
      }
 
      stage ('Build docker image') {
-             docker.build('avinash04/avinash04/my-docker:spring-petclinic-2.4.6 .')
+             docker.build('avinash04/my-docker:spring-petclinic-2.4.6')
      }
 
      stage ('Push image to Artifactory') {
