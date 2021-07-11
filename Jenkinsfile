@@ -4,6 +4,12 @@ node {
     def rtDocker = Artifactory.docker server: server
     def buildInfo
 
+    agent {
+            docker {
+                image '3.5-jdk-8-alpine'
+                args '-v /root/.m2:/root/.m2'
+            }
+    }
 
     stage ('Artifactory configuration') {
         // Obtain an Artifactory server instance, defined in Jenkins --> Manage Jenkins --> Configure System:
