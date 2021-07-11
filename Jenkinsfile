@@ -1,7 +1,7 @@
 node {
     def server = Artifactory.newServer url: 'http://localhost:8082/artifactory', username: 'admin', password: 'password'
     def rtMaven = Artifactory.newMavenBuild()
-    def rtDocker = Artifactory.docker server: server, host: "tcp://127.0.0.1:1234"
+    def rtDocker = Artifactory.docker server: server
     def buildInfo
 
 
