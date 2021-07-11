@@ -25,7 +25,7 @@ node {
      }
 
      stage ('Build docker image') {
-             docker.build('http://localhost:8082/docker-virtual/spring-petclinic:latest', 'src/main/resources')
+             docker.build('http://localhost:8082/docker-virtual/spring-petclinic:latest', '.')
      }
 
      stage ('Push image to Artifactory') {
