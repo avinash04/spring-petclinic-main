@@ -25,11 +25,11 @@ node {
      }
 
      stage ('Build docker image') {
-             docker.build(ARTIFACTORY_DOCKER_REGISTRY + '/spring-petclinic:latest', 'src/main/resources')
+             docker.build('http://localhost:8082/docker-virtual/spring-petclinic:latest', 'src/main/resources')
      }
 
      stage ('Push image to Artifactory') {
-             rtDocker.push ARTIFACTORY_DOCKER_REGISTRY + '/spring-petclinic:latest', 'docker-virtual', buildInfo
+             rtDocker.push 'http://localhost:8082/docker-virtual/spring-petclinic:latest', 'docker-virtual', buildInfo
      }
 
      stage ('Publish build info') {
