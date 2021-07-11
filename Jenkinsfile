@@ -1,4 +1,3 @@
-properties([pipelineTriggers([githubPush()])])
 node {
     def server = Artifactory.newServer url: 'http://localhost:8082/artifactory', username: 'admin', password: 'password'
     def rtMaven = Artifactory.newMavenBuild()
@@ -11,9 +10,9 @@ node {
 
         // Tool name from Jenkins configuration
         rtMaven.tool = 'maven 3.6.3'
-        rtMaven.deployer releaseRepo: 'example-repo-local', server: server
-        rtMaven.resolver releaseRepo: 'example-repo-local', server: server
-        //rtDocker = Artifactory.docker server: server
+        rtMaven.deployer releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
+        rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
+        //rtDocker = Artifactory.docker server: server, host: '192.168.0.13'
         buildInfo = Artifactory.newBuildInfo()
     }
 
@@ -23,7 +22,7 @@ node {
 
 //     stage ('Add properties') {
 //             // Attach custom properties to the published artifacts:
-//             rtDocker.addProperty("project-name", "docker").addProperty("status", "stable")
+//             rtDocker.addProperty("project-name", "avidocker").addProperty("status", "stable")
 //      }
 //
 //      stage ('Build docker image') {
