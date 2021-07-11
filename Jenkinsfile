@@ -1,3 +1,4 @@
+properties([pipelineTriggers([githubPush()])])
 node {
     def server = Artifactory.newServer url: 'http://localhost:8082', username: 'admin', password: 'password'
     def rtMaven = Artifactory.newMavenBuild()
@@ -17,7 +18,7 @@ node {
     }
 
     stage ('Exec Maven') {
-        rtMaven.run pom: 'pom.xml', goals: 'clean build', buildInfo: buildInfo
+        rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
     }
 
     stage ('Add properties') {
