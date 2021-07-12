@@ -1,11 +1,4 @@
 node {
-//     agent {
-//         docker {
-//             image 'maven:3-alpine'
-//             args '--user root -v $HOME/.m2:/root/.m2  -v /var/run/docker.sock:/var/run/docker.sock'
-//         }
-//     }
-
     stage('Mvn Package') {
                 def mvnHome = tool name: 'maven-3', type: 'maven'
                 def mvnCMD = "${mvnHome}/bin/mvn"
@@ -17,39 +10,18 @@ node {
 
     stage('Push Docker Image') {
             def server = '192.168.0.13:8082/docker-virtual'
+            def imageName = 'spring-petclinic'
+            def imageVersion = '1a2b3c'
+
             withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
                 sh "docker login -u avinash04 -p ${dockerhubP}"
             }
-            sh "docker push avinash04/my-docker:spring-petclinic-2.4.6"
-            sh "docker tag avinash04/my-docker:spring-petclinic-2.4.6 ${server}/spring-petclinic:1a2b3c"
+            sh "docker push avinash04/my-docker:${imageName}"
+            sh "docker tag avinash04/my-docker:${imageName} ${server}/${imageName}:${imageVersion}"
 
             withCredentials([string(credentialsId: 'artifact-pwd', variable: 'artifactPwd')]) {
                 sh "docker login ${server} -u admin -p ${artifactPwd}"
             }
-            sh "docker push ${server}/spring-petclinic:1a2b3c"
+            sh "docker push ${server}/${imageName}:${imageVersion}"
     }
-
-    //stage()
-//     stages {
-//         stage('Build') {
-//             steps {
-//                 sh 'mvn -B -DskipTests clean package'
-//             }
-//         }
-//         stage('Test') {
-//             steps {
-//                 sh 'mvn test'
-//             }
-//             post {
-//                 always {
-//                     junit 'target/surefire-reports/*.xml'
-//                 }
-//             }
-//         }
-//         stage('Deliver') {
-//             steps {
-//                 sh './jenkins/scripts/deliver.sh'
-//             }
-//         }
-//     }
 }
