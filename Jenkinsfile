@@ -6,9 +6,9 @@ node {
     def imageVersion = "${env.BUILD_NUMBER}"
     stage('Mvn Package') {
        def mvnHome = tool name: 'maven-3', type: 'maven'
-       def mvnCMD = "${mvnHome}/bin/mvn"
+       def mvn = "${mvnHome}/bin/mvn"
        /*Compile code and run test cases using Maven*/
-       sh "${mvnCMD} clean package"
+       sh "${mvn} clean package"
     }
 
     stage('Build Docker image') {
