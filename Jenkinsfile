@@ -44,7 +44,7 @@ node {
 
     stage('Push Docker image') {
          /* Pushing Docker image to JFrog Docker Repository created locally*/
-         docker.withRegistry("${serverUrl}", '$REPO_CREDS') {
+         docker.withRegistry("${dockerServerUrl}", '$REPO_CREDS') {
             dockerImage.push()
          }
     }
