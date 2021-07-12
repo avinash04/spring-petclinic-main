@@ -15,7 +15,7 @@ node {
     def rtMaven = Artifactory.newMavenBuild()
 
     stage ('Artifactory configuration') {
-        rtMaven.tool = 'maven 3.6.3'
+        rtMaven.tool = 'maven-3'
         rtMaven.deployer releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
         rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
         buildInfo = Artifactory.newBuildInfo()
