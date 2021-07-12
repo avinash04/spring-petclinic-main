@@ -1,5 +1,10 @@
 node {
     /* Docker Repository */
+    environment {
+        REPO_CREDS = credentials('jfrog-artifact')
+        REPO_USERNAME = "$REPO_CREDS_USR"
+        REPO_USERNAME = "$REPO_CREDS_PSW"
+    }
     def server = '192.168.0.13:8082/docker-virtual'
     def serverUrl = "http://${server}"
     def imageName = 'spring-petclinic-2.4.6'
@@ -8,7 +13,7 @@ node {
        def mvnHome = tool name: 'maven-3', type: 'maven'
        def mvn = "${mvnHome}/bin/mvn"
        /*Compile code and run test cases using Maven*/
-       sh "${mvn} clean package"
+       sh "${mvn} -s settings.xml clean install"
     }
 
     stage('Build Docker image') {
