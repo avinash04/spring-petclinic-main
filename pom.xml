@@ -146,29 +146,29 @@
             <artifactId>checkstyle</artifactId>
             <version>8.32</version>
           </dependency>
-<!--          <dependency>-->
-<!--            <groupId>io.spring.nohttp</groupId>-->
-<!--            <artifactId>nohttp-checkstyle</artifactId>-->
-<!--            <version>${nohttp-checkstyle.version}</version>-->
-<!--          </dependency>-->
+          <dependency>
+            <groupId>io.spring.nohttp</groupId>
+            <artifactId>nohttp-checkstyle</artifactId>
+            <version>${nohttp-checkstyle.version}</version>
+          </dependency>
         </dependencies>
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>nohttp-checkstyle-validation</id>-->
-<!--            <phase>validate</phase>-->
-<!--            <configuration>-->
-<!--              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>-->
-<!--              <suppressionsLocation>src/checkstyle/nohttp-checkstyle-suppressions.xml</suppressionsLocation>-->
-<!--              <encoding>UTF-8</encoding>-->
-<!--              <sourceDirectories>${basedir}</sourceDirectories>-->
-<!--              <includes>**/*</includes>-->
-<!--              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>-->
-<!--            </configuration>-->
-<!--            <goals>-->
-<!--              <goal>check</goal>-->
-<!--            </goals>-->
-<!--          </execution>-->
-<!--        </executions>-->
+        <executions>
+          <execution>
+            <id>nohttp-checkstyle-validation</id>
+            <phase>validate</phase>
+            <configuration>
+              <configLocation>src/checkstyle/nohttp-checkstyle.xml</configLocation>
+              <suppressionsLocation>src/checkstyle/nohttp-checkstyle-suppressions.xml</suppressionsLocation>
+              <encoding>UTF-8</encoding>
+              <sourceDirectories>${basedir}</sourceDirectories>
+              <includes>**/*</includes>
+              <excludes>**/.git/**/*,**/.idea/**/*,**/target/**/,**/.flattened-pom.xml,**/*.class</excludes>
+            </configuration>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>
