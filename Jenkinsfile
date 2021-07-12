@@ -6,7 +6,8 @@ node {
     }
     stage('Build Docker Image') {
             echo "....Docker Build Started...."
-            sh 'docker build -t avinash04/my-docker:spring-petclinic-2.4.6 .'
+            //sh 'docker build -t avinash04/my-docker:spring-petclinic-2.4.6 .'
+            sh 'docker build -t ${server}/${imageName}:${imageVersion} .'
     }
 
     stage('Push Docker Image') {
@@ -14,11 +15,11 @@ node {
             def imageName = 'spring-petclinic-2.4.6'
             def imageVersion = '1a2b3c'
 
-            withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
-                sh "docker login -u avinash04 -p ${dockerhubP}"
-            }
-            sh "docker push avinash04/my-docker:${imageName}"
-            sh "docker tag avinash04/my-docker:${imageName} ${server}/${imageName}:${imageVersion}"
+//             withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
+//                 sh "docker login -u avinash04 -p ${dockerhubP}"
+//             }
+//             sh "docker push avinash04/my-docker:${imageName}"
+//             sh "docker tag avinash04/my-docker:${imageName} ${server}/${imageName}:${imageVersion}"
 
             withCredentials([string(credentialsId: 'artifact-pwd', variable: 'artifactPwd')]) {
                 sh "docker login ${server} -u admin -p ${artifactPwd}"
