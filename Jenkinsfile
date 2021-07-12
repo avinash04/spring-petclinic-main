@@ -15,13 +15,13 @@ node {
             def imageVersion = '1a2b3c'
 
             withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
-                sh "docker login -u avinash04 --password-stdin $dockerhubP"
+                sh "docker login -u avinash04 --p ${dockerhubP}"
             }
             sh "docker push avinash04/my-docker:${imageName}"
             sh "docker tag avinash04/my-docker:${imageName} ${server}/${imageName}:${imageVersion}"
 
             withCredentials([string(credentialsId: 'artifact-pwd', variable: 'artifactPwd')]) {
-                sh "docker login ${server} -u admin --password-stdin $artifactPwd"
+                sh "docker login ${server} -u admin -p ${artifactPwd}"
             }
             sh "docker push ${server}/${imageName}:${imageVersion}"
     }
