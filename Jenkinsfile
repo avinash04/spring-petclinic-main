@@ -8,7 +8,7 @@ node {
     }
     def server = Artifactory.server 'SERVER_ID'
     def dockerServer = '192.168.0.13:8082/docker-virtual'
-    def server.credentialsId = 'jfrog-artifact'
+    //def server.credentialsId = 'jfrog-artifact'
     def dockerServerUrl = "http://${dockerServer}"
     def imageName = 'spring-petclinic-2.4.6'
     def imageVersion = "${env.BUILD_NUMBER}"
@@ -42,7 +42,7 @@ node {
 
     stage('Push Docker image') {
          /* Pushing Docker image to JFrog Docker Repository created locally*/
-         docker.withRegistry("${serverUrl}", "${server.credentialsId}") {
+         docker.withRegistry("${serverUrl}", '$REPO_CREDS') {
             dockerImage.push()
          }
     }
