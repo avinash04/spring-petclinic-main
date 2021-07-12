@@ -24,7 +24,7 @@ node {
     }
 
     stage('Send Email') {
-         emailext body: 'Build Completed...Docker Tag ${server}/${imageName}:${imageVersion} released',
-         recipientProviders: [buildUser()], subject: 'Build Status #${imageVersion}', to: 'jha.avinash04@gmail.com'
+         emailext body: "Build Completed...Docker Tag ${server}/${imageName}:${imageVersion} released",
+         recipientProviders: [buildUser()], subject: "Build Status #${imageVersion}", to: 'jha.avinash04@gmail.com'
     }
 }
