@@ -23,7 +23,8 @@ node {
             withCredentials([string(credentialsId: 'artifact-pwd', variable: 'artifactPwd')]) {
                 sh "docker login ${server} -u admin -p ${artifactPwd}"
             }
-            sh "docker push ${server}/spring-petclinic-2.4.6"
+            sh 'docker tag avinash04/my-docker:latest ${server}/spring-petclinic:1a2b3c
+            sh "docker push ${server}/spring-petclinic:1a2b3c"
     }
 
     //stage()
