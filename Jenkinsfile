@@ -15,7 +15,7 @@ node {
             def imageVersion = '1a2b3c'
 
             withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
-                sh "docker login -u avinash04 --p ${dockerhubP}"
+                sh "docker login -u avinash04 -p ${dockerhubP}"
             }
             sh "docker push avinash04/my-docker:${imageName}"
             sh "docker tag avinash04/my-docker:${imageName} ${server}/${imageName}:${imageVersion}"
