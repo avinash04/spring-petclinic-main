@@ -1,5 +1,6 @@
 node {
     def server = '192.168.0.13:8082/docker-virtual'
+    def serverUrl = "http://${server}"
     def imageName = 'spring-petclinic-2.4.6'
     def imageVersion = '2a1c34'
     def dockerImage = ''
@@ -61,7 +62,7 @@ node {
              * First, the incremental build number from Jenkins
              * Second, the 'latest' tag.
              * Pushing multiple tags is cheap, as all the layers are reused. */
-            docker.withRegistry("${server}", 'jfrog-artifact') {
+            docker.withRegistry("${serverUrl}", 'jfrog-artifact') {
                 app.push("${imageName}")
                 app.push("${imageVersion}")
             }
