@@ -1,4 +1,7 @@
 node {
+    def server = '192.168.0.13:8082/docker-virtual'
+    def imageName = 'spring-petclinic-2.4.6'
+    def imageVersion = '1a2b3c'
     stage('Mvn Package') {
                 def mvnHome = tool name: 'maven-3', type: 'maven'
                 def mvnCMD = "${mvnHome}/bin/mvn"
@@ -7,14 +10,10 @@ node {
     stage('Build Docker Image') {
             echo "....Docker Build Started...."
             //sh 'docker build -t avinash04/my-docker:spring-petclinic-2.4.6 .'
-            sh 'docker build -t ${server}/${imageName}:${imageVersion} .'
+            sh "docker build -t ${server}/${imageName}:${imageVersion} ."
     }
 
     stage('Push Docker Image') {
-            def server = '192.168.0.13:8082/docker-virtual'
-            def imageName = 'spring-petclinic-2.4.6'
-            def imageVersion = '1a2b3c'
-
 //             withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
 //                 sh "docker login -u avinash04 -p ${dockerhubP}"
 //             }
