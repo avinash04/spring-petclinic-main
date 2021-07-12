@@ -13,7 +13,9 @@ node {
        def mvnHome = tool name: 'maven-3', type: 'maven'
        def mvn = "${mvnHome}/bin/mvn"
        /*Compile code and run test cases using Maven*/
-       sh "${mvn} -s settings.xml clean install"
+       withCredentials([file(credentialsId: 'mvnSetting', variable: 'mvn-settings')]) {
+           sh "${mvn} -s ${mvn-settings} clean install"
+       }
     }
 
     stage('Build Docker image') {
