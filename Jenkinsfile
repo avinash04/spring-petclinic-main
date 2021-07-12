@@ -9,6 +9,7 @@ node {
     def serverUrl = "http://${server}"
     def imageName = 'spring-petclinic-2.4.6'
     def imageVersion = "${env.BUILD_NUMBER}"
+    
     stage('Mvn Package') {
        def mvnHome = tool name: 'maven-3', type: 'maven'
        def mvn = "${mvnHome}/bin/mvn"
