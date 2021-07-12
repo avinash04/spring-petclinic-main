@@ -21,8 +21,8 @@ node {
                 sh "docker login -u avinash04 -p ${dockerhubP}"
             }
             sh "docker push avinash04/my-docker:spring-petclinic-2.4.6"
-            sh "docker tag avinash04/my-docker:latest ${server}/spring-petclinic:1a2b3c"
-            
+            sh "docker tag avinash04/my-docker:spring-petclinic-2.4.6 ${server}/spring-petclinic:1a2b3c"
+
             withCredentials([string(credentialsId: 'artifact-pwd', variable: 'artifactPwd')]) {
                 sh "docker login ${server} -u admin -p ${artifactPwd}"
             }
