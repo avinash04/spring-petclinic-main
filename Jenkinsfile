@@ -63,8 +63,8 @@ node {
              * Second, the 'latest' tag.
              * Pushing multiple tags is cheap, as all the layers are reused. */
             docker.withRegistry("${serverUrl}", 'jfrog-artifact') {
-                app.push("${imageName}")
-                app.push("${imageVersion}")
+                //app.push("${imageName}")
+                app.push()
             }
         }
         stage('Send slack notification') {
