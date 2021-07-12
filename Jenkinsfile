@@ -5,7 +5,6 @@ node {
     def dockerImage = ''
     environment {
         registryCredentialSet = 'artifact-pwd'
-        registryUri = 'http://192.168.0.13:8082/docker-virtual'
     }
     stage('Mvn Package') {
                 def mvnHome = tool name: 'maven-3', type: 'maven'
@@ -17,7 +16,7 @@ node {
             // This is DockerHub Build
             //sh 'docker build -t avinash04/my-docker:spring-petclinic-2.4.6 .'
             //sh "docker build -t ${server}/${imageName}:${imageVersion} ."
-            dockerImage = docker.build registryUri + "${imageName}:${imageVersion}"
+            dockerImage = docker.build ${server} + "${imageName}:${imageVersion}"
     }
 
     stage('Push Docker Image') {
@@ -34,7 +33,7 @@ node {
 //             }
 //             sh "docker push ${server}/${imageName}:${imageVersion}"
 
-            docker.withRegistry(registryUri, registryCredentialSet){
+            docker.withRegistry(${server}, registryCredentialSet){
                 //sh "docker push ${server}/${imageName}:${imageVersion}"
                 dockerImage.push()
             }
