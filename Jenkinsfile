@@ -51,11 +51,11 @@ node {
             /*builds the image; synonymous to Docker build on the command line */
             app = docker.build("${server}")
         }
-        stage('Test Docker image') {
-            app.inside {
-                sh 'echo "Tests passed"'
-            }
-        }
+//         stage('Test Docker image') {
+//             app.inside {
+//                 sh 'echo "Tests passed"'
+//             }
+//         }
         stage('Push Docker image') {
             /* Finally, we'll push the image with two tags:
              * First, the incremental build number from Jenkins
