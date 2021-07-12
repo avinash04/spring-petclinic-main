@@ -6,8 +6,8 @@ node {
         REPO_USERNAME = "$REPO_CREDS_PSW"
         //MVN_SETTINGS = credentials('mvnSetting')
     }
-    def artifactoryUrl = 'http://192.168.0.13:8082/artifactory/maven-remote'
-    def server = Artifactory.newServer url: "${artifactoryUrl}",  credentialsId: 'jfrog-artifact'
+    //def artifactoryUrl = 'http://192.168.0.13:8082/artifactory/maven-remote'
+    def server = Artifactory.server 'SERVER_ID'
     def dockerServer = '192.168.0.13:8082/docker-virtual'
     //def server.credentialsId = 'jfrog-artifact'
     def dockerServerUrl = "http://${dockerServer}"
@@ -17,8 +17,8 @@ node {
 
     stage ('Artifactory configuration') {
         rtMaven.tool = 'maven-3'
-        rtMaven.deployer releaseRepo: 'http://192.168.0.13:8082/artifactory/libs-release', snapshotRepo: 'http://192.168.0.13:8082/artifactory/libs-snapshot', server: server
-        rtMaven.resolver, server: server
+        rtMaven.deployer releaseRepo: 'maven-remote', snapshotRepo: 'maven-remote', server: server
+        rtMaven.resolver releaseRepo: 'maven-remote', snapshotRepo: 'maven-remote', server: server
         buildInfo = Artifactory.newBuildInfo()
     }
 
@@ -46,6 +46,10 @@ node {
          docker.withRegistry("${serverUrl}", '$REPO_CREDS') {
             dockerImage.push()
          }
+    }
+
+    stage ('Publish build info') {
+         server.publishBuildInfo buildInfo
     }
 
     stage('Send Email') {
