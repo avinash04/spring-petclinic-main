@@ -49,7 +49,7 @@ node {
 
     stage('Build Docker image') {
             /*builds the image; synonymous to Docker build on the command line */
-            app = docker.build('${server}')
+            app = docker.build("${server}")
         }
         stage('Test Docker image') {
             app.inside {
