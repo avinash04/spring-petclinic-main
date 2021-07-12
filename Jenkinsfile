@@ -17,8 +17,8 @@ node {
 
     stage ('Artifactory configuration') {
         rtMaven.tool = 'maven-3'
-        rtMaven.deployer releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
-        rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
+        rtMaven.deployer releaseRepo: 'http://192.168.0.13:8082/artifactory/libs-release', snapshotRepo: 'http://192.168.0.13:8082/artifactory/libs-snapshot', server: server
+        rtMaven.resolver, server: server
         buildInfo = Artifactory.newBuildInfo()
     }
 
