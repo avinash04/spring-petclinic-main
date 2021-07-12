@@ -9,17 +9,20 @@ node {
     }
     stage('Build Docker Image') {
             echo "....Docker Build Started...."
+            // This is DockerHub Build
             //sh 'docker build -t avinash04/my-docker:spring-petclinic-2.4.6 .'
             sh "docker build -t ${server}/${imageName}:${imageVersion} ."
     }
 
     stage('Push Docker Image') {
+    // This is DockerHub Push
 //             withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
 //                 sh "docker login -u avinash04 -p ${dockerhubP}"
 //             }
 //             sh "docker push avinash04/my-docker:${imageName}"
 //             sh "docker tag avinash04/my-docker:${imageName} ${server}/${imageName}:${imageVersion}"
 
+            // Login to Docker registry artifactory and push the image build above
             withCredentials([string(credentialsId: 'artifact-pwd', variable: 'artifactPwd')]) {
                 sh "docker login ${server} -u admin -p ${artifactPwd}"
             }
