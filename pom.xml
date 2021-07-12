@@ -224,7 +224,6 @@
           </execution>
         </executions>
         <configuration>
-          <!--<useNativeGit>true</useNativeGit>-->
           <verbose>true</verbose>
           <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
           <generateGitPropertiesFile>true</generateGitPropertiesFile>

@@ -24,7 +24,7 @@ node {
 
             // Login to Docker registry artifactory and push the image build above
             withCredentials([string(credentialsId: 'artifact-pwd', variable: 'artifactPwd')]) {
-                sh "docker login ${server} -u admin -p ${artifactPwd}"
+                sh 'docker login ${server} -u admin -p $artifactPwd'
             }
             sh "docker push ${server}/${imageName}:${imageVersion}"
     }
