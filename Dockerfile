@@ -3,7 +3,7 @@ COPY . /src
 WORKDIR /src
 RUN mvn install
 
-RUN sed -i 's/port="8080"/port="9090"/' /usr/local/tomcat/conf/server.xml
+RUN sed -i 's/port="8080"/port="80"/' /usr/local/tomcat/conf/server.xml
 
 FROM openjdk:8-jdk-alpine
 ARG JAR_FILE=target/*.jar
