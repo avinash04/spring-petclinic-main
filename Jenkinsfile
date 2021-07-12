@@ -1,7 +1,7 @@
 node {
     def server = '192.168.0.13:8082/docker-virtual'
     def imageName = 'spring-petclinic-2.4.6'
-    def imageVersion = '1a2b3c'
+    def imageVersion = '2a1c34'
     stage('Mvn Package') {
                 def mvnHome = tool name: 'maven-3', type: 'maven'
                 def mvnCMD = "${mvnHome}/bin/mvn"
