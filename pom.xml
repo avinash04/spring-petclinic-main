@@ -32,6 +32,13 @@
     <spring-format.version>0.0.25</spring-format.version>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>bintray-repo-maven-example</id>
+      <url>http://localhost:8082/artifactory/jfrog-support-bundle/;publish=1</url>
+    </repository>
+  </distributionManagement>
+
   <dependencies>
     <!-- Spring and Spring Boot dependencies -->
     <dependency>

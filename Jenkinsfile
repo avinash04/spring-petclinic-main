@@ -16,10 +16,14 @@ node {
     }
 
     stage('Push Docker Image') {
-            withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
-                sh "docker login -u avinash04 -p ${dockerhubP}"
+            def server = '192.168.0.13:8082/docker-virtual'
+//             withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhubP')]) {
+//                 sh "docker login -u avinash04 -p ${dockerhubP}"
+//             }
+            withCredentials([string(credentialsId: 'artifact-pwd', variable: 'artifact-password')]) {
+                sh "docker login ${dockerhubP} -u admin -p ${dockerhubP}"
             }
-            sh 'docker push avinash04/my-docker:spring-petclinic-2.4.6'
+            sh 'docker push ${dockerhubP}/spring-petclinic-2.4.6'
     }
 
     //stage()
