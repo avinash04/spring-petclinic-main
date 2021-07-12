@@ -6,8 +6,9 @@ node {
         REPO_USERNAME = "$REPO_CREDS_PSW"
         //MVN_SETTINGS = credentials('mvnSetting')
     }
-    //def artifactoryUrl = 'http://192.168.0.13:8082/artifactory/maven-remote'
-    def server = Artifactory.server 'SERVER_ID'
+    def artifactoryUrl = 'http://localhost:8082/artifactory/maven-remote'
+    //def server = Artifactory.server 'SERVER_ID'
+    def server = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'jfrog-artifact'
     def dockerServer = '192.168.0.13:8082/docker-virtual'
     //def server.credentialsId = 'jfrog-artifact'
     def dockerServerUrl = "http://${dockerServer}"
