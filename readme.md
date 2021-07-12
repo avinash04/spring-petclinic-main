@@ -59,7 +59,8 @@ Performing below operations:
    - Create Jenkinsfile and add scripts to run pipeline (we can use pipeline syntax in jenkin for reference)
    - Add maven task packgae which will compile, run tests and generate the jar (Use maven name defined in step 1)
    - Build Docker image
-   - Publish image using docker registry with build number used as tag (sample: $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:47)
+   - Publish image using docker registry with build number used as tag 
+     (sample tag: $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:47)
    - Send Email Notification
 
 6) Additional Code changes
@@ -83,17 +84,14 @@ Performing below operations:
     
 
 
-
 ## How to use docker image attached in this repo?
 
-myDockerImage.tar was created from docker image using docker save command
-Sample: docker save -o $PATH_TO_TAR/myDockerImage.tar $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:47
+Docker image was already updated to my dockerhub repo
 
-To use this image and run application, perform below steps:
+Pull docker image
+docker pull avinash04/my-docker:petclinic-1.0
 
-Download myDockerImage.tar in local and run below command (mention full path of tar if running it from different location)
-docker load < myDockerImage.tar
-
-docker run -d -p 80:8080 192.168.0.13:8082/docker-virtual/spring-petclinic-2.4.6:47
+Run Docker Image
+docker run -d -p avinash04/my-docker:petclinic-1.0
 
 Visit [http://localhost:80](http://localhost:80) in your browser.
