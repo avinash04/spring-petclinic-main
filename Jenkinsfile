@@ -66,7 +66,7 @@ node {
                 app.push()
             }
         }
-        stage('Send slack notification') {
-             slackSend color: 'good', message: 'Message from Jenkins Pipeline'
+        stage('Send Email') {
+             emailext body: 'Build Completed!!!', recipientProviders: [buildUser()], subject: 'Build Status', to: 'jha.avinash04@gmail.com'
         }
 }
