@@ -2,8 +2,7 @@ node {
     def server = '192.168.0.13:8082/docker-virtual'
     def serverUrl = "http://${server}"
     def imageName = 'spring-petclinic-2.4.6'
-    def imageVersion = '2a1c34'
-    def dockerImage = ''
+    def imageVersion = "${env.BUILD_NUMBER}"
 //     environment {
 //         registryCredentialSet = 'artifact-pwd'
 //     }
@@ -50,7 +49,7 @@ node {
 
     stage('Build Docker image') {
             /*builds the image; synonymous to Docker build on the command line */
-            app = docker.build("${server}")
+            app = docker.build("${server}/${imageName}:${imageVersion}")
         }
 //         stage('Test Docker image') {
 //             app.inside {
