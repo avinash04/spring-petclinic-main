@@ -5,6 +5,7 @@ node {
                 sh "${mvnCMD} clean package"
     }
     stage('Build Docker Image') {
+            echo "Docker Build Started"
             sh 'docker build -t avinash04/my-docker:spring-petclinic-2.4.6 .'
     }
 
