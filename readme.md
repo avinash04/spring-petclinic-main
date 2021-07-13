@@ -36,7 +36,7 @@ Performing below operations:
 
 1) Set up Jenkins docker
    - Start Jenkins docker 
-     (Sample: docker run -d -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock $JENKINS_IMAGE_NAME)
+     (Sample: docker run -d --name=avinash04/jenkins -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock $JENKINS_IMAGE_NAME)
      Replace JENKINS_IMAGE_NAME with your image and -v /var/run/docker.sock:/var/run/docker.sock to provide docker support within jenkins container
    - Set up Jenkins and install Required plugins:- GitHub, Docker, Artifactory, Docker Pipeline.
    - Set up GitHub configuration to connect it to Repo and add webhook in GitHub to enable jenkins build on push.
