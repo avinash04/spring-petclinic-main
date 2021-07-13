@@ -105,5 +105,8 @@ Visit [http://localhost:80](http://localhost:80) in your browser.
 
 2) Image zip sent as an attachment
 
+Load the image from tar file
 "docker load < myDockerImage.tar"
+
+Run the unzipped image with container
 "docker run -d -it -p 80:8080 --name=clinic avinash04/my-docker:petclinic-2.0"
