@@ -6,9 +6,9 @@ node {
     def imageVersion = "${env.BUILD_NUMBER}"
     def rtMaven = Artifactory.newMavenBuild()
 
-//     stage ('Clone') {
-//             git url: 'https://github.com/avinash04/spring-petclinic-main.git'
-//     }
+    stage ('Clone') {
+            git url: 'https://github.com/avinash04/spring-petclinic-main.git', branch: '2.0-dev'
+    }
 
     stage ('Artifactory configuration') {
         rtMaven.tool = 'maven-3'
