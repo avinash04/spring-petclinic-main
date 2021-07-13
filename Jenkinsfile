@@ -1,11 +1,5 @@
 node {
     /* Docker Repository */
-    environment {
-        REPO_CREDS = credentials('jfrog-artifact')
-        REPO_USERNAME = "$REPO_CREDS_USR"
-        REPO_USERNAME = "$REPO_CREDS_PSW"
-        //MVN_SETTINGS = credentials('mvnSetting')
-    }
     def artifactoryUrl = 'http://192.168.0.13:8082/artifactory/maven-remote'
     def server = Artifactory.server 'SERVER_ID'
     //def server = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'jfrog-artifact'
@@ -15,6 +9,7 @@ node {
     def imageName = 'spring-petclinic-2.4.6'
     def imageVersion = "${env.BUILD_NUMBER}"
     def rtMaven = Artifactory.newMavenBuild()
+    def repoCreds = 'jfrog-artifact'
 
     stage ('Artifactory configuration') {
         rtMaven.tool = 'maven-3'
@@ -44,7 +39,7 @@ node {
 
     stage('Push Docker image') {
          /* Pushing Docker image to JFrog Docker Repository created locally*/
-         docker.withRegistry("${dockerServerUrl}", '$REPO_CREDS') {
+         docker.withRegistry("${dockerServerUrl}", "{$repoCreds}") {
             dockerImage.push()
          }
     }
