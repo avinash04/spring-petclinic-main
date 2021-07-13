@@ -28,7 +28,7 @@ Performing below operations:
 3) Resolve dependencies against remote artifactory configured in JFrog repository which internally pointed to Maven repo (instead of JCenter)
    Note: As per my research, Bintray account needed for JCenter. 
    However, I am unable to create new account as it is going sunset and led me to this page:
-   <a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter">Into the Sunset
+   <a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter">Into the Sunset</a>
 4) Package the project as a runnable Docker image
 5) Publish docker image to JFrog Artifactory (created as Docker Registry)
 
@@ -54,20 +54,20 @@ Performing below operations:
    Follow steps on : <a href="https://www.jfrog.com/confluence/display/JFROG/Getting+Started+with+Artifactory+as+a+Docker+Registry#GettingStartedwithArtifactoryasaDockerRegistry-GettingStartedwithArtifactoryProOn-Prem">Getting Started with Artifactory as a Docker Registry</a>
    
 4) Create DockerFile
-   - Create DOckerFile which has maven, java support to create docker image
+   - Create DockerFile which has maven, java support to create docker image
    - Copy generated jar to docker image and include entrypoint to run application
    - Change tomcat default port (option in case 8080 already used)
 
 5) Create Jenkinsfile
    - Create Jenkinsfile and add scripts to run pipeline (we can use pipeline syntax in jenkin for reference)
    - Checkout specific branch to build the code
-   - Add maven task packgae which will compile, run tests (Use maven name defined in step 1 and Step 2)
-   - Resolve the dependencies against Artifactory (Step 3)
+   - Add maven task packgae which will compile, run tests (Use maven name defined in step 1)
+   - Resolve the dependencies against Artifactory
    - Deploy artifacts to local JFrog artifactory
    - Build Docker Image
    - Push Docker Image
    - Publish image using docker registry with build number used as tag 
-     (sample tag: $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:47)
+     (sample tag: $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:21)
    - Send Email Notification
 
 6) Additional Code changes
@@ -79,11 +79,11 @@ Performing below operations:
    - Verify all the tasks completed
    - Check for the image in docker repository
    - Verify if email received with Subject Build Status #BUILD_NUMBER
-     Sample Email body: "Build Completed...Docker Tag $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:47 released"
+     Sample Email body: "Build Completed...Docker Tag $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:21 released"
 
 8) Run the application from docker image
    - Since artifactory was used as docker registry, running below command will run the application
-     docker run -d -p 80:8080 $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:47
+     docker run -d -p 80:8080 $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:21
 
 9) Navigate to Petclinic
 
@@ -96,9 +96,9 @@ Performing below operations:
 Docker image was already updated to my dockerhub repo
 
 Pull docker image
-docker pull avinash04/my-docker:petclinic-1.0
+docker pull avinash04/my-docker:petclinic-2.0
 
 Run Docker Image
-docker run -d -p avinash04/my-docker:petclinic-1.0
+docker run -d -p avinash04/my-docker:petclinic-2.0
 
 Visit [http://localhost:80](http://localhost:80) in your browser.

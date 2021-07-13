@@ -37,8 +37,14 @@ node {
          server.publishBuildInfo buildInfo
     }
 
-    stage('Send Email') {
-         emailext body: "Build Completed...Docker Tag ${dockerServer}/${imageName}:${imageVersion} released",
-         recipientProviders: [buildUser()], subject: "Build Status #${imageVersion}", to: 'jha.avinash04@gmail.com'
-    }
+//     stage('Send Email') {
+//          emailext body: "Build Completed...Docker Tag ${dockerServer}/${imageName}:${imageVersion} released",
+//          recipientProviders: [buildUser()], subject: "Build Status #${imageVersion}", to: 'jha.avinash04@gmail.com'
+//     }
+       emailext (
+             subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+             body: """<p>STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
+               <p>Check console output at &QUOT;<a href='${env.BUILD_URL}'>${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>&QUOT;</p>""",
+             recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+        )
 }
