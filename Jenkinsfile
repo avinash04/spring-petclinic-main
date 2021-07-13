@@ -39,6 +39,6 @@ node {
 
     stage('Send Email') {
          emailext body: "Build Completed...Docker Tag ${dockerServer}/${imageName}:${imageVersion} released",
-         recipientProviders: [developers(), buildUser()], subject: "Build Status: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", to: 'jha.avinash04@gmail.com'
+         recipientProviders: [developers(), buildUser()], subject: "Jenkins Build Status: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'", to: 'jha.avinash04@gmail.com'
     }
 }
