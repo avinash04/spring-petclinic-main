@@ -1,10 +1,7 @@
 node {
-    /* Docker Repository */
     def artifactoryUrl = 'http://192.168.0.13:8082/artifactory/maven-remote'
     def server = Artifactory.server 'SERVER_ID'
-    //def server = Artifactory.newServer url: "${artifactoryUrl}", credentialsId: 'jfrog-artifact'
     def dockerServer = '192.168.0.13:8082/docker-virtual'
-    //def server.credentialsId = 'jfrog-artifact'
     def dockerServerUrl = "http://${dockerServer}"
     def imageName = 'spring-petclinic-2.4.6'
     def imageVersion = "${env.BUILD_NUMBER}"
@@ -21,16 +18,6 @@ node {
     stage ('Exec Maven') {
             rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
     }
-
-//     stage('Mvn Package') {
-//        def mvnHome = tool name: 'maven-3', type: 'maven'
-//        def mvn = "${mvnHome}/bin/mvn"
-//        /*Compile code and run test cases using Maven*/
-//        //sh "${mvn} -s $MVN_SETTINGS clean install"
-//        withCredentials([file(credentialsId: 'mvnSetting', variable: 'MVN_SETTINGS')]) {
-//            sh "${mvn} -s ${MVN_SETTINGS} clean install"
-//        }
-//     }
 
     stage('Build Docker image') {
         /*builds the image to Docker build with project name and incremental build number*/
