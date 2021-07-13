@@ -5,7 +5,6 @@ node {
     def imageName = 'spring-petclinic-2.4.6'
     def imageVersion = "${env.BUILD_NUMBER}"
     def rtMaven = Artifactory.newMavenBuild()
-    def rtDocker
 
     stage ('Clone') {
             git url: 'https://github.com/avinash04/spring-petclinic-main.git', branch: '2.0-dev'
@@ -15,7 +14,6 @@ node {
         rtMaven.tool = 'maven-3'
         rtMaven.deployer releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
         rtMaven.resolver releaseRepo: 'maven-remote', snapshotRepo: 'maven-remote', server: server
-        rtDocker = Artifactory.docker server: "${dockerServerUrl}"
         buildInfo = Artifactory.newBuildInfo()
     }
 
@@ -25,16 +23,14 @@ node {
 
     stage('Build Docker image') {
         /*builds the image to Docker build with project name and incremental build number*/
-        //dockerImage = docker.build("${dockerServer}/${imageName}:${imageVersion}")
-        docker.build("${dockerServer}" + "${imageName}" + "${imageVersion}")
+        dockerImage = docker.build("${dockerServer}/${imageName}:${imageVersion}")
     }
 
     stage('Push Docker image') {
          /* Pushing Docker image to JFrog Docker Repository created locally*/
-//          docker.withRegistry("${dockerServerUrl}", 'jfrog-artifact') {
-//             dockerImage.push()
-//          }
-         rtDocker.push
+         docker.withRegistry("${dockerServerUrl}", 'jfrog-artifact') {
+            dockerImage.push()
+         }
     }
 
     stage ('Publish build info') {
