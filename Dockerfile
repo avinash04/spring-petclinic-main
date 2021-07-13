@@ -1,10 +1,7 @@
-#FROM maven:3.5-jdk-8-alpine
 FROM maven:3.6.3-ibmjava-8-alpine
 COPY . /src
 WORKDIR /src
-RUN mvn install
-
-RUN sed -i 's/port="8080"/port="80"/' /usr/local/tomcat/conf/server.xml
+RUN mvn install -DskipTests
 
 FROM openjdk:8-jdk-alpine
 ARG JAR_FILE=target/*.jar

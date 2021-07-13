@@ -56,7 +56,6 @@ Performing below operations:
 4) Create DockerFile
    - Create DockerFile which has maven, java support to create docker image
    - Copy generated jar to docker image and include entrypoint to run application
-   - Change tomcat default port (option in case 8080 already used)
 
 5) Create Jenkinsfile
    - Create Jenkinsfile and add scripts to run pipeline (we can use pipeline syntax in jenkin for reference)
@@ -91,14 +90,20 @@ Performing below operations:
     
 
 
-## How to use docker image attached in this repo?
+## Ways to use docker image
 
+1) Using dockerhub uploaded image
 Docker image was already updated to my dockerhub repo
 
 Pull docker image
-docker pull avinash04/my-docker:petclinic-2.0
+"docker pull avinash04/my-docker:petclinic-2.0"
 
 Run Docker Image
-docker run -d -p avinash04/my-docker:petclinic-2.0
+"docker run -d -it -p 80:8080 --name=clinic avinash04/my-docker:petclinic-2.0"
 
 Visit [http://localhost:80](http://localhost:80) in your browser.
+
+2) Image zip sent as an attachment
+
+"docker load < myDockerImage.tar"
+"docker run -d -it -p 80:8080 --name=clinic avinash04/my-docker:petclinic-2.0"
