@@ -25,16 +25,20 @@ Performing below operations:
 
 1) Compile the code
 2) Run Tests
-3) Package the project as a runnable Docker image
-4) Publish docker image to JFrog Artifactory (created as Docker Registry)
+3) Resolve dependencies against remote artifactory configured in JFrog repository which internally pointed to Maven repo (instead of JCenter)
+   Note: As per my research, Bintray account needed for JCenter. 
+   However, I am unable to create new account as it is going sunset and led me to this page:
+   <a href="https://jfrog.com/blog/into-the-sunset-bintray-jcenter-gocenter-and-chartcenter">Into the Sunset
+4) Package the project as a runnable Docker image
+5) Publish docker image to JFrog Artifactory (created as Docker Registry)
 
 ### Steps taken to achieve above tasks
 
 1) Set up Jenkins docker
    - Start Jenkins docker 
      (Sample: docker run -d -p8080:8080 -v /var/run/docker.sock:/var/run/docker.sock $JENKINS_IMAGE_NAME)
-     Replace JENKINS_IMAGE_NAME with your available jenkin image and added -v /var/run/docker.sock:/var/run/docker.sock to provide docker within jenkins
-   - Set up Jenkins and install Required plugins:- GitHub, Docker, Artifactory.
+     Replace JENKINS_IMAGE_NAME with your image and -v /var/run/docker.sock:/var/run/docker.sock to provide docker support within jenkins container
+   - Set up Jenkins and install Required plugins:- GitHub, Docker, Artifactory, Docker Pipeline.
    - Set up GitHub configuration to connect it to Repo and add webhook in GitHub to enable jenkins build on push.
      Note: Since jenkins is running locally, we need to use ngork, Something like this:
      ngrok http 8080
@@ -56,8 +60,12 @@ Performing below operations:
 
 5) Create Jenkinsfile
    - Create Jenkinsfile and add scripts to run pipeline (we can use pipeline syntax in jenkin for reference)
-   - Add maven task packgae which will compile, run tests and generate the jar (Use maven name defined in step 1)
-   - Build Docker image
+   - Checkout specific branch to build the code
+   - Add maven task packgae which will compile, run tests (Use maven name defined in step 1 and Step 2)
+   - Resolve the dependencies against Artifactory (Step 3)
+   - Deploy artifacts to local JFrog artifactory
+   - Build Docker Image
+   - Push Docker Image
    - Publish image using docker registry with build number used as tag 
      (sample tag: $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:47)
    - Send Email Notification
