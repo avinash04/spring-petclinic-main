@@ -6,7 +6,6 @@ node {
     def imageName = 'spring-petclinic-2.4.6'
     def imageVersion = "${env.BUILD_NUMBER}"
     def rtMaven = Artifactory.newMavenBuild()
-    def repoCreds = 'jfrog-artifact'
 
     stage ('Artifactory configuration') {
         rtMaven.tool = 'maven-3'
