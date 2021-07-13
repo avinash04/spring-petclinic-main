@@ -79,11 +79,11 @@ Performing below operations:
    - Verify all the tasks completed
    - Check for the image in docker repository
    - Verify if email received with Subject Build Status #BUILD_NUMBER
-     Sample Email body: "Build Completed...Docker Tag $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:21 released"
+     Sample Email body: "Build Completed...Docker Tag $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:22 released"
 
 8) Run the application from docker image
    - Since artifactory was used as docker registry, running below command will run the application
-     docker run -d -p 80:8080 $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:21
+     docker run -d -p 80:8080 $ARTIFACTORY_REGISTRY/spring-petclinic-2.4.6:22
 
 9) Navigate to Petclinic
 
