@@ -225,6 +225,7 @@
         </executions>
         <configuration>
           <verbose>true</verbose>
+          <useNativeGit>true</useNativeGit>
           <dateFormat>yyyy-MM-dd'T'HH:mm:ssZ</dateFormat>
           <generateGitPropertiesFile>true</generateGitPropertiesFile>
           <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties
