@@ -17,17 +17,17 @@ node {
         buildInfo = Artifactory.newBuildInfo()
     }
 
-//     stage ('Exec Maven') {
-//             rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
-//     }
+    stage ('Exec Maven') {
+            rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+    }
 
-     stage ('Exec Maven') {
-              docker.image('3.6.3-ibmjava-8-alpine').inside {
-                  withEnv(['JAVA_HOME=/usr/local/openjdk-8']) { // Java home of the container
-                      rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
-                  }
-              }
-     }
+//      stage ('Exec Maven') {
+//               docker.image('3.6.3-ibmjava-8-alpine').inside {
+//                   withEnv(['JAVA_HOME=/usr/local/openjdk-8']) { // Java home of the container
+//                       rtMaven.run pom: 'pom.xml', goals: 'clean install', buildInfo: buildInfo
+//                   }
+//               }
+//      }
 
     //     stage('Mvn Package') {
     //        def mvnHome = tool name: 'maven-3', type: 'maven'
