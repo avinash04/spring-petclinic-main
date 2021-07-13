@@ -1,5 +1,4 @@
 node {
-    def artifactoryUrl = 'http://192.168.0.13:8082/artifactory/maven-remote'
     def server = Artifactory.server 'SERVER_ID'
     def dockerServer = '192.168.0.13:8082/docker-virtual'
     def dockerServerUrl = "http://${dockerServer}"

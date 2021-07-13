@@ -38,8 +38,7 @@ Performing below operations:
    - Set up GitHub configuration to connect it to Repo and add webhook in GitHub to enable jenkins build on push.
      Note: Since jenkins is running locally, we need to use ngork, Something like this:
      ngrok http 8080
-     http://e22986482df1.ngrok.io -> http://localhost:8080
-     Now update http://e22986482df1.ngrok.io/github-webhook/ as webhook in github->Setting->webhooks
+     Update output url as webhook in github->Setting->webhooks
    - Under Global Tool Configuration set up maven installation and assign maven name which will later be used in Jenkinsfile
    
 2) Set up Artifactory by running docker image
