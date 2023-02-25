@@ -1,52 +1,94 @@
-name: "Frogbot Scan Pull Request"
-on:
-  pull_request_target:
-    types: [opened, synchronize]
-permissions:
-  pull-requests: write
-  contents: read
-jobs:
-  scan-pull-request:
-    runs-on: ubuntu-latest
-    # A pull request needs to be approved, before Frogbot scans it. Any GitHub user who is associated with the
-    # "frogbot" GitHub environment can approve the pull request to be scanned.
-    environment: frogbot
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+# This is a basic workflow to help you get started with Actions
 
-      # Install prerequisites
-      - name: Step 1 - Set up Java
+name: Gihub Actions Maven Build Example
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+#  push:
+#    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      JF_URL: ${{ secrets.JF_URL }}
+      # JFrog Platform access token
+      JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+      JFROG_BUILD_STATUS: PASS
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+       # setup JFrog CLI
+      - name: Step 1-  Setup JFrog CLI
+        uses: jfrog/setup-jfrog-cli@v2
+
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Step 2-  Checkout main branch from Github
+        uses: actions/checkout@v2
+
+      # Setup JDK 11
+      - name: Step 3 - Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: "11"
           distribution: "temurin"
+      # Verify artifactory conenctivity
+      - name: Step4 - Ping RT
+        run: |
+          # Ping the server
+          jf rt ping
 
-      - uses: jfrog/frogbot@v2
+      - name: Step5- Run Maven build
         env:
-          # [Mandatory]
-          # JFrog platform URL
-          JF_URL: ${{ secrets.JF_URL }}
+          SERVER_ID: ${{ secrets.MY_ARTIFACTORY_SERVER_ID }}
+        run: |
+          # Init JFrog CLI Maven config
+          MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
 
-          # [Mandatory if JF_USER and JF_PASSWORD are not provided]
-          # JFrog access token with 'read' permissions on Xray service
-          JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+          # Make sure artifactory servers for resolving 3rd party dependencies and for deploy are known to JFrog CLI
+          jf mvnc --server-id-resolve=$SERVER_ID --server-id-deploy=$SERVER_ID --repo-resolve-releases=avi-maven-release-virtual --repo-resolve-snapshots=avi-maven-snapshot-virtual --repo-deploy-releases=avi-maven-release-virtual --repo-deploy-snapshots=avi-maven-snapshot-virtual                                                                                                                                                                                                                                                                                                 
 
-          # [Mandatory]
-          # The GitHub token automatically generated for the job
-          JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Build the maven project ( see https://www.jfrog.com/confluence/display/JFROG/Setting+Up+CI+Integration)
+          jf rt mvn clean install
 
-          # Uncomment the below options if you'd like to use them.
+      - name: Step6- Failure check
+        run: |
+          echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
+        if: failure()
 
-          # [Optional, default: https://api.github.com]
-          # API endpoint to GitHub
-          # JF_GIT_API_ENDPOINT: https://github.example.com
+      
+      - name: Step7 - Publish to RT
+        env: 
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          # Add env vars
+          jf rt bce
 
-          # [Mandatory if JF_ACCESS_TOKEN is not provided]
-          # JFrog username with 'read' permissions for Xray. Must be provided with JF_PASSWORD
-          # JF_USER: ${{ secrets.JF_USER }}
+          # Collect VCS details from git and add them to the build
+          jfrog rt bag
 
-          # [Mandatory if JF_ACCESS_TOKEN is not provided]
-          # JFrog password. Must be provided with JF_USER
-          # JF_PASSWORD: ${{ secrets.JF_PASSWORD }}
+          #Publish build-info
+          jf rt bp
+       - name: Step8 - Xray Scan
+
+          # Prerequisite to xray scan a build
+          # 1. Make sure this build is indexed in Admin->Xray->Settings->Indexed Resources->Builds tab
+          # ( see https://jfrog.com/knowledge-base/xray-how-to-index-and-scan-all-builds-in-xray-in-the-unified-platform/ )
+          # 2. A watch on the build resource is defined and mapped to a policy that has he policy has  option "fail on build" selected 
+          # (see https://stackoverflow.com/questions/55992256/xray-scan-does-not-find-any-watch-when-launched-from-azure-devops-pipeline
+          # and https://www.jfrog.com/confluence/display/JFROG/CI-CD+Integration+with+Xray )
+          # 3. Scan build with JFrog Xray and if you do not want the build to fail use "--fail=false" 
+          # ( see https://www.jfrog.com/confluence/display/CLI/CLI+for+JFrog+Artifactory#CLIforJFrogArtifactory-ScanningaPublishedBuild)
+          run: |
+          jf rt bs --fail=false
+
