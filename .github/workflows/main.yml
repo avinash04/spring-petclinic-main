@@ -24,62 +24,62 @@ jobs:
       # JFrog Platform access token
       JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       JFROG_BUILD_STATUS: PASS
+      M2_HOME: /usr/local/apache-maven/apache-maven-3.6.3
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-       # setup JFrog CLI
-      - name: Step 1-  Setup JFrog CLI
-        uses: jfrog/setup-jfrog-cli@v2
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    # Setup JDK 11
+    - name: Step 1 - Set up Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: "11"
+        distribution: "temurin"
+    
+    # setup JFrog CLI
+    - name: Step 2 -  Setup JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v2
+        
+    # Verify artifactory conenctivity
+    - name: Step 3 - Ping RT
+      run: |
+        # Ping the server
+        jf rt ping
 
+    - name: Step5- Run Maven build
+      env:
+        SERVER_ID: ajha
+      run: |
+        # Init JFrog CLI Maven config
+        MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Step 2-  Checkout main branch from Github
-        uses: actions/checkout@v2
+        # Make sure artifactory servers for resolving 3rd party dependencies and for deploy are known to JFrog CLI
+        jf mvnc --server-id-resolve=$SERVER_ID --server-id-deploy=$SERVER_ID --repo-resolve-releases=avi-maven-release-virtual --repo-resolve-snapshots=avi-maven-snapshot-virtual --repo-deploy-releases=avi-maven-release-virtual --repo-deploy-snapshots=avi-maven-snapshot-virtual                                                                                                                                                                                                                                                                                                 
 
-      # Setup JDK 11
-      - name: Step 3 - Set up Java
-        uses: actions/setup-java@v3
-        with:
-          java-version: "11"
-          distribution: "temurin"
-      # Verify artifactory conenctivity
-      - name: Step4 - Ping RT
-        run: |
-          # Ping the server
-          jf rt ping
+        # Build the maven project ( see https://www.jfrog.com/confluence/display/JFROG/Setting+Up+CI+Integration)
+        jf mvn clean install
 
-      - name: Step5- Run Maven build
-        env:
-          SERVER_ID: ${{ secrets.MY_ARTIFACTORY_SERVER_ID }}
-        run: |
-          # Init JFrog CLI Maven config
-          MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
-
-          # Make sure artifactory servers for resolving 3rd party dependencies and for deploy are known to JFrog CLI
-          jf mvnc --server-id-resolve=$SERVER_ID --server-id-deploy=$SERVER_ID --repo-resolve-releases=avi-maven-release-virtual --repo-resolve-snapshots=avi-maven-snapshot-virtual --repo-deploy-releases=avi-maven-release-virtual --repo-deploy-snapshots=avi-maven-snapshot-virtual                                                                                                                                                                                                                                                                                                 
-
-          # Build the maven project ( see https://www.jfrog.com/confluence/display/JFROG/Setting+Up+CI+Integration)
-          jf rt mvn clean install
-
-      - name: Step6- Failure check
-        run: |
-          echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
-        if: failure()
+    - name: Step6- Failure check
+      run: |
+        echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
+      if: failure()
 
       
-      - name: Step7 - Publish to RT
-        env: 
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          # Add env vars
-          jf rt bce
+    - name: Step7 - Publish to RT
+      env: 
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      run: |
+        # Add env vars
+        jf rt bce
 
-          # Collect VCS details from git and add them to the build
-          jfrog rt bag
+        # Collect VCS details from git and add them to the build
+        jfrog rt bag
 
-          #Publish build-info
-          jf rt bp
-      - name: Step8 - Xray Scan
-        run: |
-          jf rt bs --fail=false
+        #Publish build-info
+        jf rt bp
+    - name: Step8 - Xray Scan
+      run: |
+        jf rt bs --fail=false
 
