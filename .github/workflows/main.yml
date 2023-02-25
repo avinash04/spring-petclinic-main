@@ -55,7 +55,7 @@ jobs:
         MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
 
         # Make sure artifactory servers for resolving 3rd party dependencies and for deploy are known to JFrog CLI
-        jf mvnc --server-id-resolve=$SERVER_ID --server-id-deploy=$SERVER_ID --repo-resolve-releases=avi-maven-release-virtual --repo-resolve-snapshots=avi-maven-snapshot-virtual --repo-deploy-releases=avi-maven-release-virtual --repo-deploy-snapshots=avi-maven-snapshot-virtual                                                                                                                                                                                                                                                                                                 
+        jf mvnc --repo-resolve-releases=avi-maven-release-virtual --repo-resolve-snapshots=avi-maven-snapshot-virtual --repo-deploy-releases=avi-maven-release-virtual --repo-deploy-snapshots=avi-maven-snapshot-virtual                                                                                                                                                                                                                                                                                                 
 
         # Build the maven project ( see https://www.jfrog.com/confluence/display/JFROG/Setting+Up+CI+Integration)
         jf mvn clean install
