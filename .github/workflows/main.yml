@@ -68,7 +68,7 @@ jobs:
       
       - name: Step7 - Publish to RT
         env: 
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.VC_TOKEN}}
         run: |
           # Add env vars
           jfrog rt bce
