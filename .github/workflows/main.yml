@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v2
 
       # Setup JDK 11
-      - name: Step 1 - Set up Java
+      - name: Step 3 - Set up Java
         uses: actions/setup-java@v3
         with:
           java-version: "11"
@@ -46,7 +46,7 @@ jobs:
       - name: Step4 - Ping RT
         run: |
           # Ping the server
-          jfrog rt ping
+          jf rt ping
 
       - name: Step5- Run Maven build
         env:
@@ -56,10 +56,10 @@ jobs:
           MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
 
           # Make sure artifactory servers for resolving 3rd party dependencies and for deploy are known to JFrog CLI
-          jfrog rt mvn-config --server-id-resolve=$SERVER_ID --server-id-deploy=$SERVER_ID --repo-resolve-releases=avi-maven-release-virtual --repo-resolve-snapshots=avi-maven-snapshot-virtual --repo-deploy-releases=avi-maven-release-virtual --repo-deploy-snapshots=avi-maven-snapshot-virtual                                                                                                                                                                                                                                                                                                 
-          
+          jf mvnc --server-id-resolve=$SERVER_ID --server-id-deploy=$SERVER_ID --repo-resolve-releases=avi-maven-release-virtual --repo-resolve-snapshots=avi-maven-snapshot-virtual --repo-deploy-releases=avi-maven-release-virtual --repo-deploy-snapshots=avi-maven-snapshot-virtual                                                                                                                                                                                                                                                                                                 
+
           # Build the maven project ( see https://www.jfrog.com/confluence/display/JFROG/Setting+Up+CI+Integration)
-          jfrog rt mvn clean install
+          jf rt mvn clean install
 
       - name: Step6- Failure check
         run: |
@@ -72,13 +72,14 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           # Add env vars
-          jfrog rt bce
+          jf rt bce
 
           # Collect VCS details from git and add them to the build
           jfrog rt bag
 
           #Publish build-info
-          jfrog rt bp
+          jf rt bp
+       - name: Step8 - Xray Scan
 
           # Prerequisite to xray scan a build
           # 1. Make sure this build is indexed in Admin->Xray->Settings->Indexed Resources->Builds tab
@@ -88,4 +89,6 @@ jobs:
           # and https://www.jfrog.com/confluence/display/JFROG/CI-CD+Integration+with+Xray )
           # 3. Scan build with JFrog Xray and if you do not want the build to fail use "--fail=false" 
           # ( see https://www.jfrog.com/confluence/display/CLI/CLI+for+JFrog+Artifactory#CLIforJFrogArtifactory-ScanningaPublishedBuild)
-          jfrog rt bs --fail=false
+          run: |
+          jf rt bs --fail=false
+
