@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Gihub Actions Maven Build Example
+name: spring-petclinic-maven-app
 
 # Controls when the workflow will run
 on:
