@@ -24,8 +24,7 @@ jobs:
       # JFrog Platform access token
       JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
       JFROG_BUILD_STATUS: PASS
-      M2_HOME: /usr/local/apache-maven/apache-maven-3.6.3
-
+      
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Checkout
@@ -50,7 +49,7 @@ jobs:
 
     - name: Step5- Run Maven build
       env:
-        SERVER_ID: ajha
+        SERVER_ID: ${{ secrets.MY_ARTIFACTORY_SERVER_ID }}
       run: |
         # Init JFrog CLI Maven config
         MVN_PATH=`which mvn` && export M2_HOME=`readlink -f $MVN_PATH | xargs dirname | xargs dirname`
