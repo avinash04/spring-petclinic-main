@@ -1,0 +1,52 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "2.0-dev" ]
+  pull_request:
+    branches: [ "2.0-dev" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      JF_URL: ${{ secrets.JF_URL }}
+      # JFrog Platform access token
+      JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
+      JFROG_BUILD_STATUS: PASS
+
+    steps:
+    - uses: Step1 - actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
+      
+    - name: Step2 - Publish the Docker image
+      run: jf docker push petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
+    
+    - name: Step2- Failure check
+      run: |
+        echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
+      if: failure()
+      
+    - name: Step3 - Publish to RT
+      env: 
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      run: |
+        # Add env vars
+        jf rt bce
+
+        # Collect VCS details from git and add them to the build
+        jfrog rt bag
+
+        Publish build-info
+        jf rt bp
+    - name: Step5 - Xray Scan
+      run: |
+        jf rt bs --fail=false
+        
+    - name: Step6 - Docker Promote
+      run: |
+        jf rt --copy bpr petclinic-docker-prod-local
+    
