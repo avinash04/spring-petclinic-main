@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "2.0-dev" ]
+    branches: [ 2.0-dev ]
   pull_request:
-    branches: [ "2.0-dev" ]
+    branches: [ 2.0-dev ]
     
 # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
       JFROG_BUILD_STATUS: PASS
 
     steps:
-    - uses: Step1 - actions/checkout@v2
+    - uses: Step1 - actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
       
