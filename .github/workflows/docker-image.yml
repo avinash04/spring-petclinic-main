@@ -21,8 +21,10 @@ jobs:
       JFROG_BUILD_STATUS: PASS
 
     steps:
-    - uses: Step1 - actions/checkout@v3
-    - name: Build the Docker image
+    - name: Step1 - Checkout
+      uses: actions/checkout@v3
+      
+    - name: Step2 - Build the Docker image
       run: docker build . --file Dockerfile --tag petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
       
     - name: Step2 - Publish the Docker image
