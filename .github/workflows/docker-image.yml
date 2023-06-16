@@ -40,7 +40,7 @@ jobs:
     - name: Step5 - Push Docker image
       run: |
         echo ${{ secrets.DOCKER }}
-        jf docker dp ${{ secrets.DOCKER }}/petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
+        jf rt dp ${{ secrets.DOCKER }}/petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
     
     - name: Step6- Failure check
       run: |
