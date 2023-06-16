@@ -23,19 +23,26 @@ jobs:
     steps:
     - name: Step1 - Checkout
       uses: actions/checkout@v3
+    
+    # Verify artifactory conenctivity
+    - name: Step2 - Ping RT
+      run: |
+        # Ping the server
+        jf rt ping
       
-    - name: Step2 - Build the Docker image
+    - name: Step3 - Build the Docker image
       run: docker build . --file Dockerfile --tag petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
       
-    - name: Step2 - Publish the Docker image
-      run: jf docker push petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
+    - name: Step4 - Push Docker image
+      run: |
+        jf docker push petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
     
-    - name: Step2- Failure check
+    - name: Step4- Failure check
       run: |
         echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
       if: failure()
       
-    - name: Step3 - Publish to RT
+    - name: Step5 - Publish to RT
       env: 
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |
@@ -47,11 +54,11 @@ jobs:
 
         Publish build-info
         jf rt bp
-    - name: Step5 - Xray Scan
+    - name: Step6 - Xray Scan
       run: |
         jf rt bs --fail=false
         
-    - name: Step6 - Docker Promote
+    - name: Step7 - Docker Promote
       run: |
         jf rt --copy bpr petclinic-docker-prod-local
     
