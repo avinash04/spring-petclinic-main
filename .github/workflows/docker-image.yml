@@ -35,7 +35,7 @@ jobs:
         jf rt ping
       
     - name: Step4 - Build the Docker image
-      run: docker build . --file Dockerfile --tag petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
+      run: docker build . --file Dockerfile --tag ${{ secrets.MY_ARTIFACTORY_SERVER_ID }}/petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
       
     - name: Step5 - Push Docker image
       run: |
