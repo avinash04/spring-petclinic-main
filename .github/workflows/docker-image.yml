@@ -39,7 +39,7 @@ jobs:
       
     - name: Step5 - Push Docker image
       run: |
-        jf docker push petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
+        jf docker push ${{ secrets.MY_ARTIFACTORY_SERVER_ID }}/petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
     
     - name: Step6- Failure check
       run: |
