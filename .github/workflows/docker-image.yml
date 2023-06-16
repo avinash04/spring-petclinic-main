@@ -40,7 +40,7 @@ jobs:
     - name: Step5 - Push Docker image
       run: |
         echo ${{ secrets.DOCKER }}
-        jf docker push ${{ secrets.DOCKER }}/petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
+        jf docker dp ${{ secrets.DOCKER }}/petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
     
     - name: Step6- Failure check
       run: |
@@ -56,9 +56,6 @@ jobs:
 
         # Collect VCS details from git and add them to the build
         jfrog rt bag
-
-        # Add docker image to build-info
-        jf rt bdc
         
         Publish build-info
         jf rt bp
