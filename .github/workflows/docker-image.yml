@@ -57,7 +57,7 @@ jobs:
         # Collect VCS details from git and add them to the build
         jfrog rt bag
         
-        Publish build-info
+        # Publish build-info
         jf rt bp
     - name: Step8 - Xray Scan
       run: |
