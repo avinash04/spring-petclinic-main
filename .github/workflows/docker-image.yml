@@ -65,5 +65,5 @@ jobs:
         
     - name: Step9 - Docker Promote
       run: |
-        jf rt --copy bpr petclinic-docker-prod-local
+        jf rt bpr petclinic-docker-prod-local
     
