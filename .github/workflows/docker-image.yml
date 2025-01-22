@@ -14,19 +14,22 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
-      JF_URL: ${{ secrets.JF_URL }}
-      # JFrog Platform access token
-      JF_ACCESS_TOKEN: ${{ secrets.JF_ACCESS_TOKEN }}
-      JFROG_BUILD_STATUS: PASS
 
     steps:
     - name: Step1 - Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       
     # setup JFrog CLI
-    - name: Step2 -  Setup JFrog CLI
-      uses: jfrog/setup-jfrog-cli@v2
+    - uses: jfrog/setup-jfrog-cli@v4
+      name: Step2 -  Setup JFrog CLI
+      env:
+        JF_URL: ${{ secrets.JF_URL }}
+        # JFrog Platform access token
+        JF_GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        JFROG_BUILD_STATUS: PASS
+      with:
+          oidc-provider-name: github
+          version: latest
     
     # Verify artifactory conenctivity
     - name: Step2 - Ping RT
@@ -35,19 +38,19 @@ jobs:
         jf rt ping
       
     - name: Step4 - Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER }}/petclinic-docker-dev-virtual/petclinic:${{github.run_number}}
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKER }}/demo-docker/petclinic:${{github.run_number}}
       
     - name: Step5 - Push Docker image
       run: |
         echo ${{ secrets.DOCKER }}
-        jf rt dp ${{ secrets.DOCKER }}/petclinic-docker-dev-virtual/petclinic:${{github.run_number}} petclinic-docker-dev-virtual
+        jf rt dp ${{ secrets.DOCKER }}/demo-docker/petclinic:${{github.run_number}} demo-docker
     
     - name: Step6- Failure check
       run: |
         echo "JFROG_BUILD_STATUS=FAIL" >> $GITHUB_ENV
       if: failure()
       
-    - name: Step7 - Publish to RT
+    - name: Step7 - Publish build to RT
       env: 
         GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       run: |
@@ -65,5 +68,5 @@ jobs:
         
     - name: Step9 - Docker Promote
       run: |
-        jf rt bpr petclinic-docker-prod-local
+        jf rt bpr prod-docker
     
