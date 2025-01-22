@@ -14,7 +14,7 @@ jobs:
   create-fix-pull-requests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       # Install prerequisites
       - name: Set up Java
@@ -24,7 +24,10 @@ jobs:
           distribution: "temurin"
 
       - uses: jfrog/frogbot@v2
+        with:
+          oidc-provider-name: github
         env:
+          ACTIONS_STEP_DEBUG: true
           # [Mandatory]
           # JFrog platform URL
           JF_URL: ${{ secrets.JF_URL }}
